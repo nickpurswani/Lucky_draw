@@ -178,7 +178,7 @@ app.get("/updatewinner/:id/:user", (req, res) => {
         { upsert: true }
       )
       .then(function (s) {
-        res.json({ ok: 1 });
+        res.json({ winner: req.params.user });
       });
 
     client.close();
