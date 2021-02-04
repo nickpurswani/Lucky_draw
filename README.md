@@ -66,6 +66,6 @@ node app.js
 
 App hosted at
 
-```bash
+
 https://salty-everglades-41996.herokuapp.com/
-```
+
