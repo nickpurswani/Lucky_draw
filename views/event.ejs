@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <title>lucky</title>
+    <style>
+        html{
+            height: 100%;
+        }
+        body {
+            
+            font-family: 'Arial', sans-serif;
+            background: whitesmoke;	
+        }
+table {
+    border: none;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  table caption {
+    font-size: 1.5em;
+    margin: .5em 0 .75em;
+  }
+  
+  table tr {
+   
+    border: 1px solid black;
+    padding: .35em;
+  }
+  
+  table th,
+  table td {
+    padding: .625em;
+    text-align: center;
+  }
+  
+  table th {
+    font-size: .85em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  
+  @media screen and (max-width: 600px) {
+    table {
+      border: 0;
+    }
+  
+    table caption {
+      font-size: 1.3em;
+    }
+    
+    table thead {
+      border: none;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+    
+    table tr {
+      border-bottom: 3px solid black;
+      display: block;
+      margin-bottom: .625em;
+    }
+    
+    table td {
+      border-bottom: 1px solid black;
+      display: block;
+      font-size: .8em;
+      text-align: left;
+    }
+    
+    table td::before {
+      
+      content: attr(data-label);
+      float: left;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    table td:last-child {
+      border-bottom: 0;
+    }
+  }
+     
+    </style>
+</head>
+<body>
+    <div class="container" style="margin-top:5%; margin-left:15%;">
+        <a href="/dash/<%=user%>" class="btn btn-success">Dashboard</a>
+   <div style=" margin-left:80%; margin-bottom:1%">
+        <a href="/eventcreate/<%=user%>" class="btn btn-primary">Create Event</a></div>
+<div style="overflow-x:auto;">
+    <table style="color: rgb(110, 20, 162);">
+        <tr>
+            <td>
+                <h2>Event Name</h2>
+            </td>
+            <td>
+                <h2>Event Reward</h2>
+            </td>
+            <td>
+                <h2>Pick Winner</h2>
+            </td><td>
+                <h2>Participate</h2>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<%s.forEach(function(event){%>
+    <div style="overflow-x:auto;">
+    <table style="color: black;" >
+        <tr>
+            <td><h2><%=event.name%></h2></td>
+            <td><h2><%=event.reward%></h2></td>
+            <td>
+                <a href="/pickwinner/<%=event._id%>" class="btn  btn-primary">pickwinner</a>
+            </td>
+            <td><form id="delete-form2" action="/participate/<%=event._id%>/<%=user%>" method="get">
+                <input type="submit" value="Participate" class="btn btn-warning ">
+                </form></td>
+        </tr>
+    </table>
+</div>
+    
+    <%})%>
+</div>
+
+</body>
+</html>

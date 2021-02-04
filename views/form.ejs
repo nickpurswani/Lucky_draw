@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky</title>
+    <style>
+        /*Global*/
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  /* font:15px/1.5 Arial, Helvetica, sans-serif;  Short-Cut*/
+  padding: 0;
+  margin: 0;
+  background-color: #f4f4f4;
+}
+.container {
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+.error {
+  background-color: red;
+  width: 90%;
+  padding: 5px;
+  color: rgb(243, 225, 225);
+}
+
+/*Header*/
+header {
+  background-color: #ccc;
+  color: #ffffff;
+  padding-top: 30px;
+  min-height: 70px;
+}
+header h1 {
+  text-align: center;
+  color: black;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/*form*/
+#main-sec {
+  width: 40%;
+  margin: auto;
+  overflow: hidden;
+}
+#main-sec form {
+  background-color: #ccc;
+  padding: 30px;
+  margin-bottom: 10px;
+}
+#main-form label,
+#main-form .btn {
+  display: block;
+}
+#main-form input {
+  width: 90%;
+  margin: 5px;
+  padding: 10px;
+}
+#main-form .btn {
+  width: 100%;
+  background-color: rgb(51, 46, 46);
+  color: white;
+  padding: 7px;
+  margin-top: 10px;
+  font-size: 17px;
+  border:none;
+  cursor:pointer;
+  
+}
+#main-form label {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#main-sec .item {
+  background-color: #ccc;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Create New Lucky Draw Event</h1>
+    </header>
+    <section id="main-sec">
+        <div class="container">
+            <h1>Create</h1>
+            <form id="main-form" action="/createevent/<%=user%>" method="POST">
+                <div class="msg"></div>
+                <label>Name</label>
+                <input type="text" placeholder="Event Name" id="name" name="name"/>
+                <label>Reward</label>
+                <input type="text" placeholder="Enter reward " id="email" name="reward" />
+<label for="meeting-time">Date For Event</label>
+
+<input type="datetime-local" id="meeting-time" name="date" value="2021-02-4T19:30" min="2021-01-07T00:00"
+    max="2021-04-1T00:00">
+                <button type="submit" class="btn">Submit</button>
+            </form>
+            
+        </div>
+    </section>
+   
+</body>
+</html>

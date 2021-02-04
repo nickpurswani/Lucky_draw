@@ -77,7 +77,7 @@ app.get("/create/:user", (req, res) => {
     client.close();
   });
 });
-app.get("/luckydraw", (req, res) => {
+app.get("/luckydraw/:user", (req, res) => {
   MongoClient.connect(uri, function (err, client) {
     if (err) {
       res.json(err);
@@ -89,8 +89,7 @@ app.get("/luckydraw", (req, res) => {
       .find()
       .toArray()
       .then(function (s) {
-        console.log(s);
-        res.render("event", { s: s });
+        res.render("event", { s: s, user: req.params.user });
       });
 
     client.close();
@@ -147,6 +146,11 @@ app.get("/participate/:id/:user", (req, res) => {
 
     const collection = client.db("luckydraw").collection("user");
     collection.findOne({ username: req.params.user }).then(function (s) {
+      if (s.raffletickets <= 0) {
+        res.json({
+          err: "Not enough raffle Tickets",
+        });
+      }
       s.luckydraw.forEach(function (i) {
         if (i == req.params.id)
           res.json({
@@ -195,7 +199,10 @@ app.get("/participate/:id/:user", (req, res) => {
     client.close();
   });
 });
-app.post("/createevent", (req, res) => {
+app.get("/eventcreate/:user", (req, res) => {
+  res.render("form", { user: req.params.user });
+});
+app.post("/createevent/:user", (req, res) => {
   let date = new Date(req.body.date + ":00.000z");
 
   let name = req.body.name;
@@ -213,7 +220,7 @@ app.post("/createevent", (req, res) => {
       { users: users, name: name, winner: winner, reward: reward, date: date },
       function (err, s) {
         if (err) throw err;
-        res.json({ inserted: 1 });
+        res.redirect("/luckydraw/" + req.params.user);
       }
     );
 
