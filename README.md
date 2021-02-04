@@ -24,8 +24,7 @@ and in making this project better.
   - [guide](https://docs.npmjs.com/cli/install)
 
 - Mongodb
-  - The database used in the app is MongoDB, so it must be configured on you local machine. Follow the [guide](https://docs.mongodb.com/manual/administration/install-on-linux/) if you dont have MongoDB installed
-  //
+  - The database used in the app is MongoDB, so it must be configured on you local machine. Follow the [guide](https://docs.mongodb.com/manual/administration/install-on-linux/) if you dont have MongoDB installed \
 App hosted at
 
 
