@@ -25,7 +25,10 @@ and in making this project better.
 
 - Mongodb
   - The database used in the app is MongoDB, so it must be configured on you local machine. Follow the [guide](https://docs.mongodb.com/manual/administration/install-on-linux/) if you dont have MongoDB installed
+App hosted at
 
+
+https://salty-everglades-41996.herokuapp.com/
 1. Make Directory
 
 ```bash
@@ -64,8 +67,5 @@ sudo service mongod status
 node app.js
 ```
 
-App hosted at
 
-
-https://salty-everglades-41996.herokuapp.com/
 
