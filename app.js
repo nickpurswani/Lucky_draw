@@ -138,29 +138,39 @@ app.get("/nextevents", (req, res) => {
   });
 });
 app.get("/participate/:id/:user", (req, res) => {
-  MongoClient.connect(uri, function (err, client) {
-    if (err) {
-      res.json(err);
-      console.log("Error occurred while connecting to MongoDB Atlas...\n", err);
-    }
-
-    const collection = client.db("luckydraw").collection("user");
-    collection.findOne({ username: req.params.user }).then(function (s) {
-      if (s.raffletickets <= 0) {
-        res.json({
-          err: "Not enough raffle Tickets",
-        });
+  var flag = 0;
+  if (flag == 0) {
+    MongoClient.connect(uri, function (err, client) {
+      if (err) {
+        res.json(err);
+        console.log(
+          "Error occurred while connecting to MongoDB Atlas...\n",
+          err
+        );
       }
-      s.luckydraw.forEach(function (i) {
-        if (i == req.params.id)
-          res.json({
-            err: "user already participated try any other lucky draw",
-          });
-      });
-    });
 
-    client.close();
-  });
+      const collection = client.db("luckydraw").collection("user");
+      collection.findOne({ username: req.params.user }).then(function (s) {
+        if (s.raffletickets <= 0) {
+          res.json({
+            err: "Not enough raffle Tickets",
+          });
+          flag = 1;
+        }
+        s.luckydraw.forEach(function (i) {
+          if (i == req.params.id) {
+            res.json({
+              err: "user already participated try any other lucky draw",
+            });
+            flag = 1;
+          }
+        });
+      });
+
+      client.close();
+    });
+  }
+
   MongoClient.connect(uri, function (err, client) {
     if (err) {
       res.json(err);
@@ -168,18 +178,19 @@ app.get("/participate/:id/:user", (req, res) => {
     }
 
     const collection = client.db("luckydraw").collection("luckydraw");
-
-    collection
-      .findOneAndUpdate(
-        { _id: ObjectId(req.params.id) },
-        { $push: { users: req.params.user } }
-      )
-      .then(function (s) {
-        res.json({ ok: 1 });
-      });
-
+    if (flag == 0) {
+      collection
+        .findOneAndUpdate(
+          { _id: ObjectId(req.params.id) },
+          { $push: { users: req.params.user } }
+        )
+        .then(function (s) {
+          res.json({ ok: 1 });
+        });
+    }
     client.close();
   });
+
   MongoClient.connect(uri, function (err, client) {
     if (err) {
       res.json(err);
@@ -187,15 +198,16 @@ app.get("/participate/:id/:user", (req, res) => {
     }
 
     const collection = client.db("luckydraw").collection("user");
-    collection.updateOne(
-      { username: req.params.user },
-      { $inc: { raffletickets: -1 } }
-    );
-    collection.findOneAndUpdate(
-      { username: req.params.user },
-      { $push: { luckydraw: ObjectId(req.params.id) } }
-    );
-
+    if (flag == 0) {
+      collection.updateOne(
+        { username: req.params.user },
+        { $inc: { raffletickets: -1 } }
+      );
+      collection.findOneAndUpdate(
+        { username: req.params.user },
+        { $push: { luckydraw: ObjectId(req.params.id) } }
+      );
+    }
     client.close();
   });
 });
