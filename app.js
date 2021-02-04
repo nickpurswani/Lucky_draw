@@ -44,14 +44,19 @@ app.post("/dash", (req, res) => {
     }
 
     const collection = client.db("luckydraw").collection("user");
-    collection.updateOne(
-      { username: username },
-      { $setOnInsert: { username: username, raffletickets: 0, luckydraw: [] } },
-      (upsert = true)
-    );
+    collection
+      .find({ username: username })
+      .toArray()
+      .then(function (s) {
+        if (s.length == 0) res.redirect("/create/" + req.body.username);
+        else res.render("dash", { s: s });
+      });
 
     client.close();
   });
+});
+app.get("/create/:user", (req, res) => {
+  let username = req.params.user;
   MongoClient.connect(uri, function (err, client) {
     if (err) {
       res.json(err);
@@ -60,10 +65,32 @@ app.post("/dash", (req, res) => {
 
     const collection = client.db("luckydraw").collection("user");
     collection
-      .find({ username: username })
+      .insertOne({
+        username: username,
+        raffletickets: 0,
+        luckydraw: [],
+      })
+      .then(function (s) {
+        res.redirect("/dash/" + req.params.user);
+      });
+
+    client.close();
+  });
+});
+app.get("/luckydraw", (req, res) => {
+  MongoClient.connect(uri, function (err, client) {
+    if (err) {
+      res.json(err);
+      console.log("Error occurred while connecting to MongoDB Atlas...\n", err);
+    }
+
+    const collection = client.db("luckydraw").collection("luckydraw");
+    collection
+      .find()
       .toArray()
       .then(function (s) {
-        res.render("dash", { s: s });
+        console.log(s);
+        res.render("event", { s: s });
       });
 
     client.close();
