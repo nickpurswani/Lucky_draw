@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<style>
+    body {
+        margin: 0;
+        padding-top: 100px;
+        background-color: whitesmoke;
+    }
+
+    .submit-area {
+        padding: 30px;
+        margin-top: 50px;
+        border-radius: 10px;
+        box-shadow: 5px 5px gray;
+        color: white;
+        background-color: royalblue;
+    }
+
+    #account-area {
+        margin-top: 5%;
+    }
+
+    .deposit {
+        background-color: slateblue;
+    }
+
+    .withdraw {
+        background-color: lightsalmon;
+    }
+
+    .balance {
+        background-color: tomato;
+    }
+
+    .status {
+        margin: 0 20px;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
+</style>
+</head>
+<body>
+    <div id="account-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="deposit status">
+                        <h5>username</h5>
+                        <h2><span id="current-deposit"><%= s[0].username%></span></h2>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-3">
+                    <div class="withdraw status">
+                        <h5>RaffleTickets</h5>
+                        <h2><span id="current-withdraw"><%= s[0].raffletickets%></span></h2>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="submit-area">
+                        <h4>Get Raffle Tickets</h4>
+                        <form action="/raffleticket/<%=s[0].username%>" method="get">
+                        <button id="deposit-btn" type="submit" class="btn btn-success">Deposit</button></form>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="submit-area">
+                        <h4>Luckydraw lists</h4>
+                        <input id="withdraw-amount" type="text" class="form-control"
+                            placeholder="Enter withdraw amount"><br>
+                        <button id="withdraw-btn" class="btn btn-success">View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        //deposit button event handler
+        const deposit_btn = document.getElementById('deposit-btn');
+        deposit_btn.addEventListener('click', function () {
+
+            const depositStringToInt = getInputNumb("deposit-amount");
+
+            updateSpanTest("current-deposit", depositStringToInt);
+            updateSpanTest("current-balance", depositStringToInt);
+
+            //setting up the input field blank when clicked
+            document.getElementById('deposit-amount').value = "";
+
+        })
+
+        //withdraw button event handler
+        const withdraw_btn = document.getElementById('withdraw-btn');
+        withdraw_btn.addEventListener('click', function () {
+            const withdrawNumb = getInputNumb("withdraw-amount");
+
+            updateSpanTest("current-withdraw", withdrawNumb);
+            updateSpanTest("current-balance", -1 * withdrawNumb);
+            //setting up the input field blank when clicked
+            document.getElementById('withdraw-amount').value = "";
+        })
+
+        //function to parse string input to int
+        function getInputNumb(idName) {
+            const amount = document.getElementById(idName).value;
+            const amountNumber = parseFloat(amount);
+            return amountNumber;
+        }
+
+        function updateSpanTest(idName, addedNumber) {
+            //x1.1 updating balance the same way
+            const current = document.getElementById(idName).innerText;
+            const currentStringToInt = parseFloat(current);
+
+            const total = currentStringToInt + addedNumber;
+
+            //x1.2 setting this value in balance
+            document.getElementById(idName).innerText = total;
+        }
+    </script>
+</body>
+
+</html>
