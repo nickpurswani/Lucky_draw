@@ -67,5 +67,5 @@ node app.js
 App hosted at
 
 ```bash
-http://localhost:3000/
+https://salty-everglades-41996.herokuapp.com/
 ```
